@@ -55,6 +55,15 @@ def deleteStore(id):
             return jsonify({"message" : "Data berhasil dihapus", "data" : deleted_data})
     return jsonify({"message" : "Data tidak ditemukan"}), 404
 
+@app.route('/store/<int:id>', methods=["PUT"])  # http://127.0.0.1:5000/store/1
+def updateStore(id):
+    req_data = request.get_json()
+    for data in datas:
+        if data['id'] == id:
+            data['nama'] = req_data.get('nama', data['nama'])  # Update nama jika ada, kalau tidak pakai lama
+            data['items'] = req_data.get('items', data['items'])  # Update items jika ada, kalau tidak pakai lama
+            return jsonify({"message": "Data berhasil diupdate", "data": data})
+    return jsonify({"message": "Data tidak ditemukan"}), 404
 
 if __name__ == '__main__':
     app.run(debug=True)
